@@ -1,6 +1,5 @@
 "use-strict";
 
-const e = require("express");
 const request = require("request-promise");
 
 //general fetch just to look at the data and how to access it
@@ -30,7 +29,14 @@ const getItemById = async (req, res) => {
   let picks = [];
   let outOfStock = [];
   let protCode = [];
+  //making sure we have data
+  if (itemIds.length === 0) {
+    return res
+      .status(404)
+      .json({ status: 404, message: "Some info is missing" });
+  }
   try {
+    // fetch item array of object
     const item = await request("https://cookit.proxy.beeceptor.com/items");
     //parsing item from API
     let parsedItem = JSON.parse(item);

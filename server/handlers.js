@@ -24,6 +24,7 @@ const getAllProteins = async (req, res) => {
 };
 //handler to return picks and out of stock array
 const getItemById = async (req, res) => {
+  // I know it's bad pratice to receive a req.body for a .get method, although I'm not sure how to otherwise receive the structure suggested in the test. Could've easily come from params and query and create the ItemIds array
   const { itemIds } = req.body;
   //initial arrays to populate and return
   let picks = [];
@@ -61,11 +62,10 @@ const getItemById = async (req, res) => {
     );
     // filtering station key and value to picks array
     filteredItem.map((item) => {
-      if (item.volume !== 0) {
-        picks.push(item.station);
-      } else {
+      if (item.volume === 0) {
         outOfStock.push(item.station);
       }
+      picks.push(item.station);
     });
     filteredProtein.map((item) => {
       picks.push(item.station);
